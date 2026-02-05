@@ -202,13 +202,13 @@ with st.sidebar:
     if uploaded_file:
         raw_df = load_data(uploaded_file)
         cols = raw_df.select_dtypes(include=np.number).columns.tolist()
-        st.markdown(t("### 1. Model Configuration", "### 1. 模型配置"))
+        st.markdown(t("### 1. Model Configuration", "1. 模型配置"))
         target_col = st.selectbox(t("🎯 Target (Outcome Y)", "🎯 目標變數 (結果 Y)"), cols, index=0)
         treatment_col = st.selectbox(t("💊 Treatment (Input T)", "💊 干預變數 (輸入 T)"), cols, index=1)
         avail_cols = [c for c in cols if c not in [target_col, treatment_col]]
         confounders = st.multiselect(t("🌪️ Confounders (Controls W)", "🌪️ 混雜因子 (控制變數 W)"), avail_cols, default=avail_cols[:2])
         
-        st.markdown(t("### 2. Execution", "### 2. 執行"))
+        st.markdown(t("### 2. Execution", "2. 執行"))
         if st.button(t("🚀 Run Causal Engine", "🚀 啟動因果引擎"), type="primary", use_container_width=True):
             st.session_state['run'] = True
             st.session_state['cate_results'] = None
@@ -289,7 +289,7 @@ if st.session_state.get('run', False) and uploaded_file:
         st.subheader(t("🔮 Multi-Scenario Simulator", "🔮 多情境模擬器"))
         col_in, col_out = st.columns([1, 2])
         with col_in:
-            st.markdown(t("### 🛠️ Adjust Strategy", "### 🛠️ 調整策略"))
+            st.markdown(t("### 🛠️ Adjust Strategy", "🛠️ 調整策略"))
             curr_avg = float(test_df[treatment_col].mean())
             price_main = st.slider(t("Proposed Treatment Value (Center)", "建議干預值 (中心)"), min_value=float(test_df[treatment_col].min()), max_value=float(test_df[treatment_col].max()), value=curr_avg)
             comp_mode = st.radio(t("Comparison Mode", "比較模式"), [t("Percentage (+/- %)", "百分比 (+/- %)"), t("Manual Prices ($)", "手動輸入數值 ($)")], horizontal=True)
@@ -302,7 +302,7 @@ if st.session_state.get('run', False) and uploaded_file:
                 price_low = c1.number_input(t("Lower Scenario", "較低情境"), value=float(price_main*0.95))
                 price_high = c2.number_input(t("Higher Scenario", "較高情境"), value=float(price_main*1.05))
                 scenario_labels = [t("Scenario A (Low)", "情境 A (低)"), t("Proposed", "建議方案"), t("Scenario B (High)", "情境 B (高)")]
-            st.markdown(t("### 📦 Inventory Specs", "### 📦 庫存規格"))
+            st.markdown(t("### 📦 Inventory Specs", "📦 庫存規格"))
             lead_time = st.number_input(t("Lead Time (Days)", "前置時間 (天)"), value=5)
 
         with col_out:
@@ -365,7 +365,7 @@ if st.session_state.get('run', False) and uploaded_file:
         st.subheader(t("🌌 Parallel Universe Simulation", "🌌 平行時空模擬"))
         col_p1, col_p2 = st.columns([1, 3])
         with col_p1:
-            st.markdown(t("### ⚙️ Universe B Settings", "### ⚙️ 平行時空 B 配置"))
+            st.markdown(t("### ⚙️ Universe B Settings", "⚙️ 平行時空 B 配置"))
             price_b = st.slider(t("Universe B Price ($)", "時空 B 數值 ($)"), min_value=float(test_df[treatment_col].min()), max_value=float(test_df[treatment_col].max()), value=float(test_df[treatment_col].mean()))
             target_sl = st.slider(t("Target Service Level (%)", "目標服務水準 (%)"), 90, 99, 95) / 100
             sim_lt = st.number_input(t("Supply Lead Time (Days)", "供應前置時間 (天)"), value=5, key="plt")
